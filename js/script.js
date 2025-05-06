@@ -75,7 +75,7 @@ function calculateResult() {
         The match() method returns an array of matches, where:
             match[1] is the first number
             match[3] is the operator
-            match[4] is the second number (note: this is incorrect, it should be match[5])
+            match[5] is the second number 
 
         The code then extracts these values and converts the numbers to JavaScript numbers using Number().
         */
@@ -84,7 +84,7 @@ function calculateResult() {
         if (match) {
             const num1 = Number(match[1]);  // Convert to number
             const operator = match[3];      // Extract operator
-            const num2 = Number(match[4]);  // Convert to number
+            const num2 = Number(match[5]);  // Convert to number
 
             // Perform calculation based on operator
             switch (operator) {
