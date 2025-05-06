@@ -64,12 +64,27 @@ function calculateResult() {
 
     try {
         // Use regex to extract numbers and operator
+        /*
+        The regular expression /(-?\d+(\.\d+)?)([+\-*\/])(-?\d+(\.\d+)?)/ matches:
+            An optional minus sign (-?)
+            One or more digits (\d+)
+            An optional decimal part (. followed by one or more digits) ((.\d+)?)
+            An operator (+, -, *, or /) ([+\-*\/])
+            Another number (same pattern as the first number)
+
+        The match() method returns an array of matches, where:
+            match[1] is the first number
+            match[3] is the operator
+            match[4] is the second number (note: this is incorrect, it should be match[5])
+
+        The code then extracts these values and converts the numbers to JavaScript numbers using Number().
+        */
         const match = value.match(/(-?\d+(\.\d+)?)([+\-*\/])(-?\d+(\.\d+)?)/);
 
         if (match) {
-            const num1 = Number(match[1]);
-            const operator = match[3];
-            const num2 = Number(match[4]);
+            const num1 = Number(match[1]);  // Convert to number
+            const operator = match[3];      // Extract operator
+            const num2 = Number(match[4]);  // Convert to number
 
             // Perform calculation based on operator
             switch (operator) {
