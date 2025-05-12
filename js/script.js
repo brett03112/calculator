@@ -1,129 +1,191 @@
-// event listener for number buttons
-const buttons = document.querySelectorAll(".btn-num");
-buttons.forEach((button) => {
-    button.addEventListener("click", () => {
-        document.getElementById("answer").value += button.innerText;
-    });
-});
+const display = document.getElementById("answer");
+const buttons = document.querySelectorAll(".btn");
 
-// event listener for sign change button
-const signButton = document.querySelector(".btn-op-sign");
-signButton.addEventListener("click", () => {
-    const input = document.getElementById("answer");
-    if (input.value !== "") {
-        input.value = parseFloat(input.value) * -1;
+let firstOperand = null;
+let operator = null;
+let waitingForSecondOperand = false;
+
+// Function to handle input (from clicks or keyboard)
+function handleInput(value) {
+    if (display.value === "Error" || display.value === "Infinity" || display.value === "-Infinity") {
+        display.value = "";
     }
-});
 
-// event listener for percent button
-const percentButton = document.querySelector(".btn-op-percent");
-percentButton.addEventListener("click", () => {
-    const input = document.getElementById("answer");
-    if (input.value !== "") {
-        input.value = parseFloat(input.value) / 100;
+    // Handle specific button actions
+    if (value === "AC") {
+        clearAll();
+        return;
+    } else if (value === "C") {
+        clearDisplay();
+        return;
+    } else if (value === "+/-") {
+        changeSign();
+        return;
+    } else if (value === "%") {
+        calculatePercentage();
+        return;
+    } else if (value === "=") {
+        calculateResult();
+        return;
     }
-});
 
-// event listener for "AC" and "C" operators
-const operatorClear = document.querySelectorAll(".btn-op-clear");
-operatorClear.forEach((operator) => {
-    operator.addEventListener("click", () => {
-        if (operator.innerText === "AC" || operator.innerText === "C") {
-            document.getElementById("answer").value = "";
-        }
-    });
-});
-
-// event listeners for all operators (+, -, *, /)
-const operatorAdd = document.querySelector(".btn-op-add");
-const operatorSub = document.querySelector(".btn-op-sub");
-const operatorMult = document.querySelector(".btn-op-mult");
-const operatorDiv = document.querySelector(".btn-op-div");
-const operatorEqual = document.querySelector(".btn-op-equal");
-
-operatorAdd.addEventListener("click", () => {
-    document.getElementById("answer").value += "+";
-});
-
-operatorSub.addEventListener("click", () => {
-    document.getElementById("answer").value += "-";
-});
-
-operatorMult.addEventListener("click", () => {
-    document.getElementById("answer").value += "*";
-});
-
-operatorDiv.addEventListener("click", () => {
-    document.getElementById("answer").value += "/";
-});
-
-// Function to calculate the result
-function calculateResult() {
-    let value = document.getElementById("answer").value;
-    let result;
-
-    try {
-        // Use regex to extract numbers and operator
-        /*
-        The regular expression /(-?\d+(\.\d+)?)([+\-*\/])(-?\d+(\.\d+)?)/ matches:
-            An optional minus sign (-?)
-            One or more digits (\d+)
-            An optional decimal part (. followed by one or more digits) ((.\d+)?)
-            An operator (+, -, *, or /) ([+\-*\/])
-            Another number (same pattern as the first number)
-
-        The match() method returns an array of matches, where:
-            match[1] is the first number
-            match[3] is the operator
-            match[5] is the second number 
-
-        The code then extracts these values and converts the numbers to JavaScript numbers using Number().
-        */
-        const match = value.match(/(-?\d+(\.\d+)?)([+\-*\/])(-?\d+(\.\d+)?)/);
-
-        if (match) {
-            const num1 = Number(match[1]);  // Convert to number
-            const operator = match[3];      // Extract operator
-            const num2 = Number(match[5]);  // Convert to number
-
-            // Perform calculation based on operator
-            switch (operator) {
-                case "+":
-                    result = num1 + num2;
-                    break;
-                case "-":
-                    result = num1 - num2;
-                    break;
-                case "*":
-                    result = num1 * num2;
-                    break;
-                case "/":
-                    if (num2 === 0) {
-                        result = "Error: Division by zero";
-                    } else {
-                        result = num1 / num2;
-                    }
-                    break;
-                default:
-                    result = "Error";
-            }
+    // Handle number and decimal input
+    if (!isNaN(value) || value === ".") {
+        if (waitingForSecondOperand === true) {
+            display.value = value;
+            waitingForSecondOperand = false;
         } else {
-            // If no valid expression is found
-            result = "Error";
+            // Prevent multiple decimal points
+            if (value === "." && display.value.includes(".")) {
+                return;
+            }
+            display.value += value;
         }
-    } catch (error) {
-        result = "Error";
+        return;
     }
 
-    document.getElementById("answer").value = result;
+    // Handle operator input
+    if (value === "+" || value === "-" || value === "*" || value === "/") {
+        handleOperator(value);
+        return;
+    }
 }
 
-// Event listener for the equal button
-operatorEqual.addEventListener("click", calculateResult);
+// Function to clear all state
+function clearAll() {
+    display.value = "";
+    firstOperand = null;
+    operator = null;
+    waitingForSecondOperand = false;
+}
 
-// Add event listener for Enter key to perform the same action as "=" button
+// Function to clear only the display
+function clearDisplay() {
+    display.value = "";
+}
+
+// Function to change the sign of the current number
+function changeSign() {
+    if (display.value !== "" && !isNaN(parseFloat(display.value))) {
+        display.value = (parseFloat(display.value) * -1).toString();
+    }
+}
+
+// Function to calculate the percentage of the current number
+function calculatePercentage() {
+    if (display.value !== "" && !isNaN(parseFloat(display.value))) {
+        display.value = (parseFloat(display.value) / 100).toString();
+    }
+}
+
+
+// Function to handle operator input
+function handleOperator(nextOperator) {
+    const inputValue = parseFloat(display.value);
+
+    if (operator && waitingForSecondOperand) {
+        operator = nextOperator;
+        return;
+    }
+
+    if (firstOperand === null && !isNaN(inputValue)) {
+        firstOperand = inputValue;
+    } else if (operator) {
+        const result = performCalculation[operator](firstOperand, inputValue);
+        display.value = result;
+        firstOperand = result;
+    }
+
+    waitingForSecondOperand = true;
+    operator = nextOperator;
+}
+
+// Object to perform calculations
+const performCalculation = {
+    "+": (firstOperand, secondOperand) => firstOperand + secondOperand,
+    "-": (firstOperand, secondOperand) => firstOperand - secondOperand,
+    "*": (firstOperand, secondOperand) => firstOperand * secondOperand,
+    "/": (firstOperand, secondOperand) => {
+        if (secondOperand === 0) {
+            return "Error";
+        }
+        return firstOperand / secondOperand;
+    },
+};
+
+
+// Function to calculate the final result
+function calculateResult() {
+    const inputValue = parseFloat(display.value);
+
+    if (operator && firstOperand !== null && !isNaN(inputValue)) {
+        const result = performCalculation[operator](firstOperand, inputValue);
+        display.value = result;
+        firstOperand = result; // Allow chaining operations
+        operator = null; // Reset operator after calculation
+        waitingForSecondOperand = false;
+    } else if (display.value !== "" && !isNaN(inputValue)) {
+        // If there's no operator or first operand, just display the current value
+        // This handles cases where a number is entered and then '=' is pressed
+        firstOperand = inputValue;
+        operator = null;
+        waitingForSecondOperand = false;
+    } else {
+        display.value = "Error";
+    }
+}
+
+
+// Event listeners for all buttons
+buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+        handleInput(button.innerText);
+    });
+});
+
+// Add event listener for keyboard input
 document.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") {
+    const key = event.key;
+    let buttonValue = null;
+
+    if (key >= "0" && key <= "9") {
+        buttonValue = key;
+    } else if (key === ".") {
+        buttonValue = ".";
+    } else if (key === "+") {
+        buttonValue = "+";
+    } else if (key === "-") {
+        buttonValue = "-";
+    } else if (key === "*") {
+        buttonValue = "*";
+    } else if (key === "/") {
+        buttonValue = "/";
+    } else if (key === "Enter" || key === "=") {
+        event.preventDefault(); // Prevent default form submission if inside one
         calculateResult();
+        return; // Calculation is handled, no further input processing needed
+    } else if (key === "Backspace") {
+        if (display.value.length > 0) {
+            display.value = display.value.slice(0, -1);
+        }
+        return; // Backspace is handled
+    } else if (key.toLowerCase() === "c") {
+        // Differentiate between 'c' for 'C' and 'Escape' for 'AC'
+        // For now, 'c' maps to 'C' (clear display)
+        clearDisplay();
+        return;
+    } else if (key === "%") {
+        calculatePercentage();
+        return;
+    } else if (key === "Escape") {
+        // Map Escape key to AC (clear all)
+        clearAll();
+        return;
+    }
+
+
+    if (buttonValue !== null) {
+        event.preventDefault(); // Prevent default browser actions for these keys
+        handleInput(buttonValue);
     }
 });
