@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <!-- Meta tags for character encoding and responsive design -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Page title that appears in browser tab -->
+        <title>Calculator Tests</title>
+        <!-- Inline styles for the test runner interface -->
+        <style>
+            /* Base body styles for the test page */
+            body {
+                font-family: monospace;
+                /* Use monospace font for better readability of test output */
+                max-width: 800px;
+                /* Limit width for better readability */
+                margin: 0 auto;
+                /* Center content horizontally */
+                padding: 20px;
+                /* Add some space around content */
+                background-color: #f5f5f5;
+                /* Light gray background */
+            }
+
+            /* Page heading styles */
+            h1 {
+                text-align: center;
+                /* Center the heading */
+                color: #333;
+                /* Dark gray text color */
+            }
+
+            /* Test results container styles */
+            #testResults {
+                background-color: #fff;
+                /* White background for test results */
+                border: 1px solid #ddd;
+                /* Light gray border */
+                padding: 15px;
+                /* Internal spacing */
+                border-radius: 5px;
+                /* Rounded corners */
+                margin-top: 20px;
+                /* Space between heading and results */
+                white-space: pre-wrap;
+                /* Preserve whitespace but allow wrapping */
+                overflow-y: auto;
+                /* Add scrollbar when content overflows */
+                max-height: 500px;
+                /* Limit height and enable scrolling for many tests */
+            }
+
+            /* Success message styling */
+            .success {
+                color: green;
+                /* Green text for passed tests */
+            }
+
+            /* Failure message styling */
+            .failure {
+                color: red;
+                /* Red text for failed tests */
+                font-weight: bold;
+                /* Bold text to highlight failures */
+            }
+        </style>
+    </head>
+
+    <body>
+        <!-- Page heading -->
+        <h1>Calculator Tests</h1>
+        <!-- Container for test results output -->
+        <div id="testResults">Running tests...</div>
+
+        <script>
+            /**
+             * Test Runner Setup
+             * 
+             * This script overrides the default console methods to display test results
+             * in the browser. It runs when the DOM content is fully loaded.
+             */
+            document.addEventListener('DOMContentLoaded', function () {
+                // Store references to original console methods
+                const originalConsoleLog = console.log;
+                const originalConsoleAssert = console.assert;
+
+                // Get reference to the test results container
+                const testResultsDiv = document.getElementById('testResults');
+                testResultsDiv.textContent = '';
+
+                /**
+                 * Override console.log to display messages in the test results div
+                 * 
+                 * @param {string} message - The message to log
+                 */
+                console.log = function (message) {
+                    // Call the original console.log method
+                    originalConsoleLog.apply(console, arguments);
+                    // Add the message to the test results div
+                    testResultsDiv.textContent += message + '\n';
+                    // Scroll to the bottom to show the latest message
+                    testResultsDiv.scrollTop = testResultsDiv.scrollHeight;
+                };
+
+                /**
+                 * Override console.assert to display assertion results in the test results div
+                 * 
+                 * @param {boolean} condition - The condition to test
+                 * @param {string} message - The assertion message
+                 */
+                console.assert = function (condition, message) {
+                    if (!condition) {
+                        // Format and display failed assertions
+                        const assertMessage = 'Assertion failed: ' + message;
+                        testResultsDiv.innerHTML += '<span class="failure">' + assertMessage + '</span>\n';
+                        originalConsoleLog.apply(console, [assertMessage]);
+                    } else {
+                        // Format and display passed assertions
+                        testResultsDiv.innerHTML += '<span class="success">✓ ' + message + '</span>\n';
+                    }
+                    // Scroll to the bottom to show the latest result
+                    testResultsDiv.scrollTop = testResultsDiv.scrollHeight;
+                };
+            });
+        </script>
+
+        <!-- Include the calculator implementation code -->
+        <script src="../javascript/calculation.js"></script>
+
+        <!-- Include the test suite with all test functions -->
+        <script src="calculator.test.js"></script>
+    </body>
+
+</html>

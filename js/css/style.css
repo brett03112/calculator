@@ -1,0 +1,175 @@
+/* 
+ * Global Reset and Base Styles
+ * 
+ * Reset all elements to have consistent styling across browsers
+ * and set the box-sizing model to border-box for more predictable layouts
+ */
+* {
+    margin: 0; /* Remove default margins */
+    padding: 0; /* Remove default padding */
+    box-sizing: border-box; /* Include padding and border in element's width and height */
+    font-family: Arial, sans-serif; /* Set consistent font family */
+}
+
+/* 
+ * Body Styles
+ * 
+ * Center the calculator in the viewport and set a light background
+ */
+body {
+    display: flex; /* Use flexbox for centering */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    min-height: 100vh; /* Make body at least full viewport height */
+    background-color: #f5f5f5; /* Light gray background */
+}
+
+/* 
+ * Calculator Container
+ * 
+ * Main container for the calculator with dark background and rounded corners
+ */
+.calculator {
+    background-color: #333; /* Dark gray background */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
+    width: 320px; /* Fixed width */
+    overflow: hidden; /* Hide any content that overflows */
+}
+
+/* 
+ * Display Area
+ * 
+ * The top section of the calculator that shows the input and results
+ */
+.display {
+    background-color: #222; /* Darker background for display */
+    color: white; /* White text */
+    text-align: right; /* Right-align text (like most calculators) */
+    padding: 15px; /* Padding around the text */
+    font-size: 24px; /* Base font size */
+    min-height: 80px; /* Minimum height to accommodate two lines */
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column; /* Stack children vertically */
+    justify-content: space-between; /* Space between previous and current operands */
+    word-wrap: break-word; /* Wrap long text */
+    word-break: break-all; /* Break words if needed to prevent overflow */
+}
+
+/* 
+ * Previous Operand Display
+ * 
+ * Shows the previous operand and operation (e.g., "123 +")
+ */
+.previous-operand {
+    color: rgba(255, 255, 255, 0.75); /* Slightly transparent white */
+    font-size: 16px; /* Smaller font size */
+    min-height: 20px; /* Minimum height to prevent layout shifts */
+}
+
+/* 
+ * Current Operand Display
+ * 
+ * Shows the current input or result
+ */
+.current-operand {
+    font-size: 32px; /* Larger font size for current input */
+    min-height: 40px; /* Minimum height to prevent layout shifts */
+}
+
+/* 
+ * Buttons Container
+ * 
+ * Grid layout for the calculator buttons
+ */
+.buttons {
+    display: grid; /* Use CSS Grid for button layout */
+    grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
+    gap: 1px; /* Small gap between buttons */
+    background-color: #444; /* Background color for the gaps */
+}
+
+/* 
+ * Button Base Styles
+ * 
+ * Common styles for all calculator buttons
+ */
+button {
+    border: none; /* Remove default borders */
+    outline: none; /* Remove focus outline */
+    background-color: #555; /* Medium gray background */
+    color: white; /* White text */
+    font-size: 20px; /* Large font size for readability */
+    padding: 20px; /* Padding for larger touch targets */
+    cursor: pointer; /* Show pointer cursor on hover */
+    transition: background-color 0.2s; /* Smooth transition for hover effect */
+}
+
+/* Button hover state */
+button:hover {
+    background-color: #666; /* Slightly lighter on hover */
+}
+
+/* Button active (pressed) state */
+button:active {
+    background-color: #777; /* Even lighter when pressed */
+}
+
+/* 
+ * Clear and Delete Buttons
+ * 
+ * Special styling for AC and DEL buttons (red)
+ */
+.clear,
+.delete {
+    background-color: #ff6961; /* Light red background */
+}
+
+.clear:hover,
+.delete:hover {
+    background-color: #ff8681; /* Lighter red on hover */
+}
+
+/* 
+ * Operator Buttons
+ * 
+ * Special styling for operation buttons (blue)
+ */
+.operator {
+    background-color: #4d79ff; /* Blue background */
+}
+
+.operator:hover {
+    background-color: #6a8fff; /* Lighter blue on hover */
+}
+
+/* 
+ * Equals Button
+ * 
+ * Special styling for equals button (green)
+ */
+.equals {
+    background-color: #4caf50; /* Green background */
+}
+
+.equals:hover {
+    background-color: #66bb6a; /* Lighter green on hover */
+}
+
+/* 
+ * Zero Button
+ * 
+ * Make the zero button span two columns
+ */
+.zero {
+    grid-column: span 2; /* Make zero button twice as wide */
+}
+
+/* 
+ * Error Message
+ * 
+ * Styling for error messages (e.g., division by zero)
+ */
+.error {
+    color: #ff6961; /* Red text for errors */
+}

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <!-- Meta tags for character encoding and responsive design -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Page title that appears in browser tab -->
+        <title>Calculator</title>
+        <!-- Link to external CSS file for styling -->
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+
+    <body>
+        <!-- Main calculator container -->
+        <div class="calculator">
+            <!-- Display section of the calculator -->
+            <div class="display">
+                <!-- Previous operand display (shows operation in progress) -->
+                <div class="previous-operand" id="previousOperand"></div>
+                <!-- Current operand display (shows current input or result) -->
+                <div class="current-operand" id="currentOperand">0</div>
+            </div>
+
+            <!-- Calculator buttons container -->
+            <div class="buttons">
+                <!-- Function buttons (first row) -->
+                <button class="clear" id="clear">AC</button> <!-- All Clear button -->
+                <button class="delete" id="delete">DEL</button> <!-- Delete button -->
+                <button class="operator" data-operator="%">%</button> <!-- Percentage/modulo button -->
+                <button class="operator" data-operator="/">÷</button> <!-- Division button -->
+
+                <!-- Number buttons (second row) -->
+                <button class="number" data-number="7">7</button>
+                <button class="number" data-number="8">8</button>
+                <button class="number" data-number="9">9</button>
+                <button class="operator" data-operator="*">×</button> <!-- Multiplication button -->
+
+                <!-- Number buttons (third row) -->
+                <button class="number" data-number="4">4</button>
+                <button class="number" data-number="5">5</button>
+                <button class="number" data-number="6">6</button>
+                <button class="operator" data-operator="-">−</button> <!-- Subtraction button -->
+
+                <!-- Number buttons (fourth row) -->
+                <button class="number" data-number="1">1</button>
+                <button class="number" data-number="2">2</button>
+                <button class="number" data-number="3">3</button>
+                <button class="operator" data-operator="+">+</button> <!-- Addition button -->
+
+                <!-- Bottom row buttons -->
+                <button class="number zero" data-number="0">0</button> <!-- Zero button (wider) -->
+                <button class="decimal" data-number=".">.</button> <!-- Decimal point button -->
+                <button class="equals" id="equals">=</button> <!-- Equals button -->
+            </div>
+        </div>
+
+        <!-- Link to JavaScript file for calculator functionality -->
+        <script src="javascript/calculation.js"></script>
+    </body>
+
+</html>
