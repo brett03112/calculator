@@ -6,19 +6,17 @@ This project is a simple web-based calculator application built using HTML, CSS,
 
 The project is organized with the following structure:
 
-```text
+```
 calculator/
 ├── README.md
-├── css/                  # Legacy directory
-├── js/                   # Main project directory
-│   ├── index.html        # Calculator interface
-│   ├── css/              
-│   │   └── style.css     # Calculator styling
-│   ├── javascript/
-│   │   └── calculation.js # Calculator logic implementation
-│   └── tests/            # Test suite
-│       ├── calculator.test.js # Test cases for Calculator class
-│       └── test.html     # Test runner interface
+├── index.html        # Calculator interface
+├── css/              
+│   └── style.css     # Calculator styling
+├── javascript/
+│   └── calculation.js # Calculator logic implementation
+└── tests/            # Test suite
+    ├── calculator.test.js # Test cases for Calculator class
+    └── test.html     # Test runner interface
 ```
 
 ## Features
@@ -38,7 +36,7 @@ The calculator provides the following functionality:
 
 The project includes a comprehensive test suite that verifies all calculator functionality:
 
-* **Test Runner**: Open `js/tests/test.html` in a browser to run all tests
+* **Test Runner**: Open `tests/test.html` in a browser to run all tests
 * **Test Coverage**: Tests include:
   * Constructor initialization
   * Clear and delete operations
