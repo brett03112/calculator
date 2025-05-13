@@ -6,7 +6,7 @@ This project is a simple web-based calculator application built using HTML, CSS,
 
 The project is organized with the following structure:
 
-```mermaid
+```text
 calculator/
 ├── README.md
 ├── css/                  # Legacy directory
